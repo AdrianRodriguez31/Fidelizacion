@@ -7,12 +7,13 @@ import android.util.Log;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Properties;
 
 
 /**
@@ -57,7 +58,6 @@ public class GestorDb {
                     e.printStackTrace();
                 }
             }
-            Log.e("URL_COn", URL_connect);
             OkHttpClient client = new OkHttpClient();
             Request request = null;
             Response response = null;
@@ -80,22 +80,19 @@ public class GestorDb {
         protected void onPostExecute(String result) {
             pDialog.dismiss();
             if(result!="")
-            {Log.e("result: ",result);
-                if(result.equals("true"))
+            {
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+
+                JsonElement je = new JsonParser().parse(result);
+                if(je.getAsJsonObject().get("error").getAsString().equals("false"))
                 {
-                    lectura.actualizaPuntos(result);
-                    Toast.makeText(context, "Transaccion realizada ", Toast.LENGTH_LONG).show();
+                    String value = je.getAsJsonObject().get("datos").toString();
+                    tarjeta = gson.fromJson(value, Tarjeta.class);
+                    lectura.respuestaLecturaTag(tarjeta);
                 }
                 else
-                {
-                    GsonBuilder builder = new GsonBuilder();
-                    Gson gson = builder.create();
-                    Properties properties = gson.fromJson(result, Properties.class);
-                    String pro=properties.getProperty("error");
-                    Log.e("property: ",pro);
-                    //tarjeta = gson.fromJson(result, Tarjeta.class);
-                    //lectura.respuestaLecturaTag(tarjeta);
-                }
+                    Toast.makeText(context, je.getAsJsonObject().get("error").toString(), Toast.LENGTH_LONG).show();
             }
             else
             {
