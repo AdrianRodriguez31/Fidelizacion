@@ -41,16 +41,16 @@ public class GestorDb {
         }
         protected String doInBackground(Object... params) {
             Log.e("param",params[0].toString());
-            if(params[0].toString().equals("Consulta.php"))
-            {
+            if(params[0].toString().equals("Consulta.php")) {
                 try {
-                    URL_connect="http://"+IP_Server+"/Fidelizacion/"+params[0]+"?ideTarjeta="+URLEncoder.encode( ((Tarjeta) params[1]).toString(uid), "UTF-8");
-
-                } catch (UnsupportedEncodingException e) {
+                    URL_connect = "http://" + IP_Server + "/Fidelizacion/" + params[0] + "?ideTarjeta=" + URLEncoder.encode(((Tarjeta) params[1]).toString(uid), "UTF-8");
+                }
+                  catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
+
                 }
             }
-            else if(params[0].toString().equals("InsertarTransaccion.php"))
+                else if(params[0].toString().equals("InsertarTransaccion.php"))
             {
                 try {
                    URL_connect= "http://" + IP_Server + "/Fidelizacion/" + params[0] + "?datos=" + URLEncoder.encode( ((Transaccion) params[1]).toString(uid), "UTF-8");
@@ -108,10 +108,6 @@ public class GestorDb {
     public void insertarTransaccion(ComunicadorGestorDb lectura,Transaccion tr){
         this.lectura = lectura;
         tarea=new Actualiza_Puntos();
-        tarea.execute("InsertarTransaccion.php",tr);
+        tarea.execute("InsertarTransaccion.php", tr);
     }
-
-
-
-
 }
