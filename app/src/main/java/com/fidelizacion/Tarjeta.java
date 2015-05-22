@@ -29,7 +29,7 @@ public class Tarjeta {
     }
 
 
-    public String toString(String uid) {
+    public String formato(String uid) {
         return "{\"uid\":\""+uid+"\"}";
     }
 }
