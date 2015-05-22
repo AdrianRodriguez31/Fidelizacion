@@ -149,7 +149,7 @@ public class GestorDb {
                 else if(je.getAsJsonObject().get("error").getAsString().equals("false_pref"))
                 {
                     Toast.makeText(context,je.getAsJsonObject().get("datos").toString(), Toast.LENGTH_LONG).show();
-                    lectura.actualizaPuntos();
+
                 }
                 else
                     Toast.makeText(context, je.getAsJsonObject().get("error").toString(), Toast.LENGTH_LONG).show();
