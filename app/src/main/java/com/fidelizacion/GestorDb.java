@@ -10,11 +10,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.internal.http.OkHeaders;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -74,7 +76,6 @@ public class GestorDb {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                //URL_connect = "http://" + IP_Server + "/Fidelizacion/" + params[0] + "?datos=" +valor;
                 URL_connect = "http://" + IP_Server + "/Fidelizacion/" + params[0];
             }
             else if(params[0].toString().equals("InsertarTransaccion.php"))
@@ -85,18 +86,13 @@ public class GestorDb {
                     e.printStackTrace();
                 }
             }
-
-            /*OkHttpClient client = new OkHttpClient();
+            OkHttpClient client = new OkHttpClient();
             Request request = null;
             RequestBody body=null;
             Response response = null;
-            body=RequestBody.create(MediaType.parse("application/json; charset=utf-8"), valor);
-            request = new Request.Builder().url(URL_connect).post(body).build();*/
-            OkHttpClient client = new OkHttpClient();
+            body= new FormEncodingBuilder().add("datos", valor).build();
+            request = new Request.Builder().url(URL_connect).post(body).build();
 
-            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), valor);
-            Request request = new Request.Builder().url(URL_connect).post(body).build();
-            Response response = null;
             try {
                 response = client.newCall(request).execute();
             } catch (Exception e) {
