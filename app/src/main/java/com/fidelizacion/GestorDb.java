@@ -70,6 +70,11 @@ public class GestorDb {
                 Transaccion transac=(Transaccion) params[1];
                 x=transac.formato(uid);
             }
+            else if(params[0].toString().equals("ActualizaPreferencias.php"))
+            {
+                Tarjeta t=(Tarjeta)params[1];
+                x=t.formatoPrecio(uid);
+            }
 
             Crypto cr = null;
 
@@ -111,6 +116,7 @@ public class GestorDb {
         }
         protected void onPostExecute(String result) {
             pDialog.dismiss();
+            Log.e("url",URL_connect);
             Decrypto desc=null;
             String desenc="";
             try {
@@ -140,6 +146,11 @@ public class GestorDb {
                     Toast.makeText(context,je.getAsJsonObject().get("datos").toString(), Toast.LENGTH_LONG).show();
                     lectura.actualizaPuntos();
                 }
+                else if(je.getAsJsonObject().get("error").getAsString().equals("false_pref"))
+                {
+                    Toast.makeText(context,je.getAsJsonObject().get("datos").toString(), Toast.LENGTH_LONG).show();
+                    lectura.actualizaPuntos();
+                }
                 else
                     Toast.makeText(context, je.getAsJsonObject().get("error").toString(), Toast.LENGTH_LONG).show();
             }
@@ -151,13 +162,19 @@ public class GestorDb {
     public void getTarjeta(ComunicadorGestorDb lectura){
         this.lectura = lectura;
         tarea=new Actualiza_Puntos();
-        tarea.execute("Consulta.php",new Tarjeta(uid,0));
+        tarea.execute("Consulta.php",new Tarjeta(uid,0,0,0));
     }
 
     public void insertarTransaccion(ComunicadorGestorDb lectura,Transaccion tr){
         this.lectura = lectura;
         tarea=new Actualiza_Puntos();
         tarea.execute("InsertarTransaccion.php", tr);
+    }
+
+    public void actualizaPreferencias(ComunicadorGestorDb lectura,int ppe,int ppv){
+        this.lectura = lectura;
+        tarea=new Actualiza_Puntos();
+        tarea.execute("ActualizaPreferencias.php", new Tarjeta(uid,0,ppe,ppv),ppe,ppv);
     }
 
 }

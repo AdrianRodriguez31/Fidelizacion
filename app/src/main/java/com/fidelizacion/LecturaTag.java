@@ -46,7 +46,9 @@ public class LecturaTag extends Activity implements ComunicadorGestorDb {
                 modoCanjeo = settings.getString("modoCanjeo", "Por Precio");
                 ppv = settings.getInt("ppv", 1);
                 ppe = settings.getInt("ppe",1);
+                actualizaPrecios(ppe,ppv);
                 asignarModo(modoCanjeo);
+
             }
         };
         settings.registerOnSharedPreferenceChangeListener(listener);
@@ -96,13 +98,23 @@ public class LecturaTag extends Activity implements ComunicadorGestorDb {
             tvUsuario.setText(usuario);
             puntos=String.valueOf(card.getPuntos());
             tvPuntos.setText(puntos);
+
             asignarModo(modoCanjeo);
         }
         else {
             asignarModo("");
         }
     }
+    private void actualizaPrecios(int tppe,int tppv){
+        ppe=tppe;
+        ppv=tppv;
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("ppe",tppe);
+        editor.putInt("ppv",tppv);
+        editor.commit();
 
+        gestor.actualizaPreferencias(this,ppe,ppv);
+    }
     @Override
     public void actualizaPuntos(){
         etPoint.setText("");
@@ -110,6 +122,7 @@ public class LecturaTag extends Activity implements ComunicadorGestorDb {
     }
 
     private void asignarModo(String modo){
+
         etPoint.setText("");
         if(modo.equals("Por Precio"))
         {

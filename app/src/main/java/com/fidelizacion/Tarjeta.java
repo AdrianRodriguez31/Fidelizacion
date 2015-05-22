@@ -5,11 +5,13 @@ package com.fidelizacion;
  */
 public class Tarjeta {
     private String nombre;
-    private int puntos;
+    private int puntos,puntosporeuro,puntosporventa;
 
-    public Tarjeta(String nombre, int puntos) {
+    public Tarjeta(String nombre, int puntos,int puntosporeuro,int puntosporventa) {
         this.nombre = nombre;
         this.puntos = puntos;
+        this.puntosporeuro=puntosporeuro;
+        this.puntosporventa=puntosporventa;
     }
 
     public String getNombre() {
@@ -28,8 +30,30 @@ public class Tarjeta {
         this.puntos = puntos;
     }
 
+    public int getPpe() {
+        return puntosporeuro;
+    }
+
+    public void setPpe(int ppe) {
+        this.puntosporeuro = ppe;
+    }
+
+    public int getPpv() {
+        return puntosporventa;
+    }
+
+    public void setPpv(int ppv) {
+        this.puntosporventa = ppv;
+    }
 
     public String formato(String uid) {
         return "{\"uid\":\""+uid+"\"}";
     }
+
+    public String formatoPrecio(String uid) {
+        return "{\"uid\":\""+uid+"\"" +
+                "{\"ppe\":\"" + puntosporeuro + "\"," +
+                "\"ppv\":\"" + puntosporventa + "\"}";
+    }
+
 }
