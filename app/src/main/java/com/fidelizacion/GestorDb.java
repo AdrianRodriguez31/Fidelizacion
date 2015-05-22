@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
@@ -58,34 +59,33 @@ public class GestorDb {
             pDialog.show();
         }
         protected String doInBackground(Object... params) {
-            Log.e("param", params[0].toString());
             String valor="";
+            String x="";
             if(params[0].toString().equals("Consulta.php")) {
                 Tarjeta t=(Tarjeta)params[1];
-                    String x=t.formato(uid);
-                Crypto cr = null;
-
-                try {
-                    cr=new Crypto("encriptator12345");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                try {
-                    valor=cr.encrypt(x);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                URL_connect = "http://" + IP_Server + "/Fidelizacion/" + params[0];
+                x=t.formato(uid);
             }
             else if(params[0].toString().equals("InsertarTransaccion.php"))
             {
-                try {
-                   URL_connect= "http://" + IP_Server + "/Fidelizacion/" + params[0] + "?datos=" + URLEncoder.encode( ((Transaccion) params[1]).toString(uid), "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                Transaccion transac=(Transaccion) params[1];
+                x=transac.formato(uid);
             }
+
+            Crypto cr = null;
+
+            try {
+                cr=new Crypto("encriptator12345");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                valor=cr.encrypt(x);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            URL_connect = "http://" + IP_Server + "/Fidelizacion/" + params[0];
+
             OkHttpClient client = new OkHttpClient();
             Request request = null;
             RequestBody body=null;
@@ -111,7 +111,6 @@ public class GestorDb {
         }
         protected void onPostExecute(String result) {
             pDialog.dismiss();
-            Log.e("enc: ", result);
             Decrypto desc=null;
             String desenc="";
             try {
@@ -130,18 +129,23 @@ public class GestorDb {
                 Gson gson = builder.create();
 
                 JsonElement je = new JsonParser().parse(desenc);
-                if(je.getAsJsonObject().get("error").getAsString().equals("false"))
+                if(je.getAsJsonObject().get("error").getAsString().equals("false_cons"))
                 {
                     String value = je.getAsJsonObject().get("datos").toString();
                     tarjeta = gson.fromJson(value, Tarjeta.class);
                     lectura.respuestaLecturaTag(tarjeta);
+                }
+                else if(je.getAsJsonObject().get("error").getAsString().equals("false_trans"))
+                {
+                    Toast.makeText(context,je.getAsJsonObject().get("datos").toString(), Toast.LENGTH_LONG).show();
+                    lectura.actualizaPuntos();
                 }
                 else
                     Toast.makeText(context, je.getAsJsonObject().get("error").toString(), Toast.LENGTH_LONG).show();
             }
             else
             {
-                Toast.makeText(context, "Gson Fallido ", Toast.LENGTH_LONG).show();}
+                Toast.makeText(context, "Error al obtener datos del servidor ", Toast.LENGTH_LONG).show();}
         }
     }
     public void getTarjeta(ComunicadorGestorDb lectura){

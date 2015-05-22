@@ -7,5 +7,5 @@ public interface ComunicadorGestorDb {
 
     public void respuestaLecturaTag(Tarjeta t);
 
-    public void actualizaPuntos(String point);
+    public void actualizaPuntos();
 }

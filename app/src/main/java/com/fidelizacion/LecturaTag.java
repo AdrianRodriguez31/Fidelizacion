@@ -104,7 +104,7 @@ public class LecturaTag extends Activity implements ComunicadorGestorDb {
     }
 
     @Override
-    public void actualizaPuntos(String point){
+    public void actualizaPuntos(){
         etPoint.setText("");
         actualizarDatos();
     }
@@ -140,13 +140,13 @@ public class LecturaTag extends Activity implements ComunicadorGestorDb {
         {
             if (modoCanjeo.equals("Por Precio")) {
                 int r = redondearPrecio(Double.valueOf(etPoint.getText().toString()));
-                int p = Integer.valueOf(puntos) + (r * ppe);
+                int p = r * ppe;
                 crearTransaccion(p);
             } else if (modoCanjeo.equals("Por Puntos")) {
-                int p = Integer.valueOf(puntos) + Integer.valueOf(etPoint.getText().toString());
+                int p = Integer.valueOf(etPoint.getText().toString());
                 crearTransaccion(p);
             } else if (modoCanjeo.equals("Por Ventas")) {
-                int p = Integer.valueOf(puntos) + (Integer.valueOf(etPoint.getText().toString()) * ppv);
+                int p = Integer.valueOf(etPoint.getText().toString()) * ppv;
                 crearTransaccion(p);
             }
         }
@@ -163,32 +163,28 @@ public class LecturaTag extends Activity implements ComunicadorGestorDb {
                     Toast.makeText(this, "No tiene puntos suficientes, " + r, Toast.LENGTH_LONG).show();
                 } else {
 
-                    int p = Integer.valueOf(puntos) - (r * ppe);
+                    int p = - (r * ppe);
                     crearTransaccion(p);
                 }
             } else if (modoCanjeo.equals("Por Puntos")) {
                 if (Integer.valueOf(puntos) < Integer.valueOf(etPoint.getText().toString())) {
                     Toast.makeText(this, "No tiene puntos suficientes", Toast.LENGTH_LONG).show();
                 } else {
-                    int p = Integer.valueOf(puntos) - Integer.valueOf(etPoint.getText().toString());
+                    int p = - Integer.valueOf(etPoint.getText().toString());
                     crearTransaccion(p);
                 }
             } else if (modoCanjeo.equals("Por Ventas")) {
                 if (Integer.valueOf(puntos) < (Integer.valueOf(etPoint.getText().toString()) * ppv)) {
                     Toast.makeText(this, "No tiene puntos suficientes", Toast.LENGTH_LONG).show();
                 } else {
-                    int p = Integer.valueOf(puntos) - (Integer.valueOf(etPoint.getText().toString()) * ppv);
+                    int p = - (Integer.valueOf(etPoint.getText().toString()) * ppv);
                     crearTransaccion(p);
                 }
             }
         }
     }
     public void crearTransaccion(int punt){
-        Calendar cal = new GregorianCalendar();
-        Date date = cal.getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        String formatteDate = df.format(date);
-        Transaccion tran= new Transaccion(0,tipoTransaccion,formatteDate,punt,modoCanjeo,Float.valueOf(etPoint.getText().toString()),ppe,ppv,uid);
+        Transaccion tran= new Transaccion(punt,uid,modoCanjeo);
         gestor.insertarTransaccion(this, tran);
     }
 
