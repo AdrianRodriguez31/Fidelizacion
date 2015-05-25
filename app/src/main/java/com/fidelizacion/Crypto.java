@@ -81,9 +81,4 @@ public class Crypto {
         return bytesToHex(encrypted);
     }
 
-    /*public static void main(String[] args) throws Exception {
-        Crypto c = new Crypto("D4:6E:AC:3F:F0:BE");
-        String encrStr = c.encrypt("Hello World");
-        System.out.println("Encrypted Str :" + encrStr);
-    }*/
 }

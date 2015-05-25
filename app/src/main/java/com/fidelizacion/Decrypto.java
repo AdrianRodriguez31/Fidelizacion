@@ -71,9 +71,4 @@ public class Decrypto {
         String decrData = new String(outText).trim();
         return decrData;
     }
-    /*public static void main(String[] args) throws Exception {
-        Decrypto c = new Decrypto("D4:6E:AC:3F:F0:BE");
-        String decrStr = c.decrypt("1f50a943601d8e29206c716f82e58b8d");
-        System.out.println("Decrypted Str :" + decrStr);
-    }*/
 }
