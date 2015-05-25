@@ -96,7 +96,8 @@ public class GestorDb {
         }
         protected void onPostExecute(String result) {
             pDialog.dismiss();
-            Log.e("url",URL_connect);
+            Log.e("url", URL_connect);
+            Log.e("answer",result);
             Decrypto desc=null;
             String desenc="";
             try {
@@ -139,10 +140,10 @@ public class GestorDb {
                 Toast.makeText(context, "Error al obtener datos del servidor ", Toast.LENGTH_LONG).show();}
         }
     }
-    public void getTarjeta(ComunicadorGestorDb lectura){
+    public void getTarjeta(ComunicadorGestorDb lectura,String user,String pass){
         this.lectura = lectura;
         tarea=new Actualiza_Puntos();
-        tarea.execute("Consulta.php",new Tarjeta(uid,0,0,0));
+        tarea.execute("Consulta.php",new Tarjeta(uid,0,0,0,user,pass));
     }
 
     public void insertarTransaccion(ComunicadorGestorDb lectura,Transaccion tr){
@@ -151,10 +152,10 @@ public class GestorDb {
         tarea.execute("InsertarTransaccion.php", tr);
     }
 
-    public void actualizaPreferencias(ComunicadorGestorDb lectura,int ppe,int ppv){
+    public void actualizaPreferencias(ComunicadorGestorDb lectura,int ppe,int ppv,String user,String pass){
         this.lectura = lectura;
         tarea=new Actualiza_Puntos();
-        tarea.execute("ActualizaPreferencias.php", new Tarjeta(uid,0,ppe,ppv),ppe,ppv);
+        tarea.execute("ActualizaPreferencias.php", new Tarjeta(uid,0,ppe,ppv,user,pass),ppe,ppv);
     }
 
 }

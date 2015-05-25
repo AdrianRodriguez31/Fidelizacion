@@ -7,10 +7,9 @@
     <string name="title_activity_por_puntos">PorPuntos</string>
     <string name="title_activity_por_ventas">PorVentas</string>
     <string name="title_activity_preferencias">Preferencias</string>
-    <string name="title_activity_asdf">asdf</string>
-    <string name="title_activity_fragmento">Fragmento</string>
     <string name="title_activity_tag_actualizar_db">TagActualizarDb</string>
     <string name="title_activity_lectura_tag">LecturaTag</string>
-    <string name="title_activity_fragmento_superior">FragmentoSuperior</string>
     <string name="title_activity_presentacion">Presentacion</string>
+    <string name="user">adrian</string>
+    <string name="pass">adrian</string>
 </resources>

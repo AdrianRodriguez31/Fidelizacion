@@ -22,6 +22,7 @@ public class LecturaTag extends Activity implements ComunicadorGestorDb {
     private EditText etPoint;
     public static final String PREFS_NAME = "PreferencesFile";
     public static String usuario="Usuario",puntos="Puntos";
+    private String user,pass;
     SharedPreferences.OnSharedPreferenceChangeListener listener;
     private String IP_Server="192.168.1.56";
     private GestorDb gestor;
@@ -30,7 +31,8 @@ public class LecturaTag extends Activity implements ComunicadorGestorDb {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        user=getResources().getString(R.string.user);
+        pass=String.valueOf(R.string.pass);
         settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         modoCanjeo = settings.getString("modoCanjeo", "Por Precio");
         ppv = settings.getInt("ppv", 1);
@@ -82,7 +84,7 @@ public class LecturaTag extends Activity implements ComunicadorGestorDb {
 //Métodos para conectar con el servidor y actualizar info:
 
     public void actualizarDatos(){
-        gestor.getTarjeta(this);
+        gestor.getTarjeta(this,user,pass);
     }
 
     @Override
@@ -109,7 +111,7 @@ public class LecturaTag extends Activity implements ComunicadorGestorDb {
         editor.putInt("ppv",tppv);
         editor.commit();
 
-        gestor.actualizaPreferencias(this,ppe,ppv);
+        gestor.actualizaPreferencias(this,ppe,ppv,user,pass);
     }
     @Override
     public void actualizaPuntos(){
